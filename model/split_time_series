@@ -1,1 +1,73 @@
+# --- One-cell time-series splitter (70/10/20 by groups, leakage-safe) ---
+
+import os, math, numpy as np, pandas as pd
+
+# ====== CONFIG (edit as needed) ======
+TRANSFORMERS = {
+    "trans_1": "../dataset/trans_1.csv",
+    "trans_2": "../dataset/trans_2.csv",
+}
+TIMESTAMP_COL = None  # e.g., "timestamp" if you have one; else leave as None
+GROUP_SIZE    = 96 * 7  # contiguous rows per group (e.g., 1 week for hourly data)
+PROPORTIONS   = (0.70, 0.10, 0.20)  # train, val, test by groups
+RANDOM_SEED   = 42     # shuffle groups reproducibly
+OUT_DIR       = "../splits"
+# =====================================
+
+def load_df(path, ts_col):
+    df = pd.read_csv(path)
+    if ts_col and ts_col in df.columns:
+        df = df.sort_values(ts_col)
+    return df.reset_index(drop=True)
+
+def make_group_ids(n, g):
+    n_groups = math.ceil(n / g)
+    groups = np.repeat(np.arange(n_groups), g)[:n]
+    return groups, n_groups
+
+def split_groups(n_groups, props=(0.7,0.1,0.2), seed=42, randomize=True):
+    assert abs(sum(props) - 1.0) < 1e-9, "PROPORTIONS must sum to 1"
+    # group ids in chronological order:
+    ids = np.arange(n_groups)
+    if randomize:
+        rng = np.random.RandomState(seed)
+        rng.shuffle(ids)
+    n_train = int(math.floor(props[0] * n_groups))
+    n_val   = int(math.floor(props[1] * n_groups))
+    n_test  = max(0, n_groups - n_train - n_val)
+    train_ids = np.sort(ids[:n_train])
+    val_ids   = np.sort(ids[n_train:n_train+n_val])
+    test_ids  = np.sort(ids[n_train+n_val:n_train+n_val+n_test])
+    return train_ids, val_ids, test_ids
+
+def indices_for(groups, chosen):
+    return np.where(np.isin(groups, chosen))[0]
+
+def save_indices(base, split_name, idx):
+    os.makedirs(base, exist_ok=True)
+    pd.Series(idx, name="row_index").to_csv(os.path.join(base, f"indices_{split_name}.csv"), index=False)
+
+for tf_name, path in TRANSFORMERS.items():
+    df = load_df(path, TIMESTAMP_COL)
+    groups, n_groups = make_group_ids(len(df), GROUP_SIZE)
+    g_tr, g_va, g_te = split_groups(n_groups, PROPORTIONS, RANDOM_SEED, randomize=True)
+
+    idx_tr = indices_for(groups, g_tr)
+    idx_va = indices_for(groups, g_va)
+    idx_te = indices_for(groups, g_te)
+
+    base = os.path.join(OUT_DIR, tf_name)
+    save_indices(base, "train", idx_tr)
+    save_indices(base, "val",   idx_va)
+    save_indices(base, "test",  idx_te)
+
+    # quick sanity report
+    print(
+        f"{tf_name}: rows={len(df)} | groups={n_groups} | "
+        f"train={len(idx_tr)} ({len(g_tr)} groups) | "
+        f"val={len(idx_va)} ({len(g_va)} groups) | "
+        f"test={len(idx_te)} ({len(g_te)} groups)"
+    )
+
+print(f"\nDone. Split indices saved under: {OUT_DIR}/<transformer>/indices_*.csv")
 
