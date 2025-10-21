@@ -1,1 +1,3 @@
+Data has been split as follows:
+"When splitting the dataset, treat every 672 consecutive rows (15-min intervals) as one group (≈ one week). Randomly assign 70 % of the groups to training, 10 % to validation, and 20 % to testing"
 
