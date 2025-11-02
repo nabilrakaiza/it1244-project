@@ -1,0 +1,20 @@
+{
+  "transformer": "trans_1",
+  "horizon": "t+1h",
+  "window": 96,
+  "stride": 1,
+  "channels": 96,
+  "kernel": 3,
+  "dropout": 0.1,
+  "loss": "Huber",
+  "lr": 0.0002,
+  "batch_size": 64,
+  "epochs": 130,
+  "val_loss": 0.11211201548576355,
+  "MAE_z": 0.5035302042961121,
+  "RMSE_z": 0.76619952917099,
+  "R2": 0.38681137561798096,
+  "MAE_C": 4.462865352630615,
+  "RMSE_C": 6.7909440994262695,
+  "seed": 42
+}
