@@ -1,5 +1,7 @@
-article/research paper references
+article/research paper references and link
 
-https://onlinelibrary.wiley.com/doi/full/10.1155/je/9714104
-http://article.sapub.org/10.5923.j.eee.20231301.03.html
-https://www.sciencedirect.com/science/article/pii/S2199853125000666
+Boujamza, A.; and Lissane Elhaq, S. 2025. Predicting Oil Temperature in Electrical Transformers Using Neural Hierarchical Interpolation. Journal of Engineering 2025: 9714104. https://onlinelibrary.wiley.com/doi/full/10.1155/je/9714104
+
+Ofori, D.; Armah, E.; Marfo, B.; Otchere, I. K.; Quansah, A.; and Kyeremeh, K. A. 2023. Predictive Health Monitoring of a Power Transformer Using Machine Learning. Electrical and Electronic Engineering 13(1): 12–18. http://article.sapub.org/10.5923.j.eee.20231301.03.html
+
+Suprihadi, E.; Danila, N.; and Ali, Z. 2025. Enhancing financial product forecasting accuracy using EMD and feature selection with ensemble models. Journal of Open Innovation: Technology, Market and Complexity 11(2): 100531. https://www.sciencedirect.com/science/article/pii/S2199853125000666
