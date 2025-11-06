@@ -19,3 +19,9 @@ scikit-learn catboost lightgbm xgboost pandas numpy matplotlib seaborn optuna te
 ### 3. Running each ipynb files
 
 Go to code folder and you can run all of the code there. Alternatively, you may also load the model from our google drive. Please make sure that your dataset filename is in a correct folder when importing. As a sidenote, you may refrain from using “/” in your model filename code since it can lead to errors. 
+
+### People working for this project (in alphabetical order)
+1. Jaisev Singh Sachdev
+2. Muhammad Ilham Alfarisi
+3. Nabil Rakaiza Abror
+4. Teo Ting Wei
